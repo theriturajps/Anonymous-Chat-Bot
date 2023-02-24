@@ -1,7 +1,7 @@
 import os 
 
-TOKEN = os.environ.get("TOKEN", "")
-OWNER = os.environ.get("OWNER", "AmiFutami")
-GROUP = os.environ.get("GROUP", "safothebot")
-CHANNEL = os.environ.get("CHANNEL", "AsmSafone")
-BOT_NAME = os.environ.get("BOT_NAME", "Anonymous ChatBot")
+TOKEN = os.environ.get("TOKEN", "5858982186:AAH1IPd2u9kzFst_ZdIvTHGsXLGR0hD02kc")
+OWNER = os.environ.get("OWNER", "RituRajPS")
+GROUP = os.environ.get("GROUP", "StreamerViewGroup")
+CHANNEL = os.environ.get("CHANNEL", "StreamerView")
+BOT_NAME = os.environ.get("BOT_NAME", "Pro Open AI")

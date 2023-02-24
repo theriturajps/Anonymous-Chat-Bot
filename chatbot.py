@@ -39,11 +39,26 @@ def welcome(message):
         mark = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         mark.add('🔍 Find a Partner')
         mark.add('📰 Info Profile', '🗑 Delete Profile')
-        bot.send_message(message.from_user.id, f"*Welcome to Join {BOT_NAME}🙊*\n\n_Hope you get a friend or a mate_\n\n*NOTE:*\nJOIN\n[👥 ɢʀᴏᴜᴘ](t.me/{GROUP}) | [ᴄʜᴀɴɴᴇʟ 📣](t.me/{CHANNEL}) | [📱ᴏᴡɴᴇʀ](t.me/{OWNER})",parse_mode="markdown",disable_web_page_preview=True, reply_markup=mark)
+        bot.send_message(
+            message.from_user.id, 
+            f"*Welcome to Join {BOT_NAME}🙊*\n\n_Hope you get a friend or a mate_\n\n*NOTE:*\nJOIN\n[👥 ɢʀᴏᴜᴘ](t.me/{GROUP}) | [ᴄʜᴀɴɴᴇʟ 📣](t.me/{CHANNEL}) | [📱ᴏᴡɴᴇʀ](t.me/{OWNER})",
+            parse_mode="markdown",
+            disable_web_page_preview=True,
+            reply_markup=mark
+        )
+
         bot.register_next_step_handler(message, search_prof)
     else:
-        bot.send_message(message.from_user.id, "_👋Hello New Users, To Continue Filling The Following Bio data!_",parse_mode="markdown")
-        bot.send_message(message.from_user.id, "➡️ *Your name :*", parse_mode="markdown")
+        bot.send_message(
+            message.from_user.id,
+            "👋Hello New Users, To Continue Filling The Following Bio data!",
+            parse_mode="markdown"
+        )
+        bot.send_message(
+            message.from_user.id,
+            "➡️ *Your name :*",
+            parse_mode="markdown"
+        )
         bot.register_next_step_handler(message, reg_name)
 
 @bot.message_handler(content_types=['text'])
@@ -66,7 +81,7 @@ def reg_name(message):
 def reg_age(message):  
     age = message.text
     if not age.isdigit():
-        msg = bot.reply_to(message, '_Use numbers, not letters!!_', parse_mode="markdown")
+        msg = bot.reply_to(message, 'Use numbers, not letters!!', parse_mode="markdown")
         bot.register_next_step_handler(msg, reg_age)
         return
     user = user_dict[message.from_user.id]
@@ -88,7 +103,7 @@ def reg_sex(message):
         bot.register_next_step_handler(message, reg_change)
 
     else:
-        bot.send_message(message.from_user.id, '_Please click on the keyboard!_',parse_mode="markdown")
+        bot.send_message(message.from_user.id, 'Please click on the keyboard!',parse_mode="markdown")
         bot.register_next_step_handler(message, reg_sex)
 
 
@@ -98,7 +113,7 @@ def reg_change(message):
         user.change = message.text
         date1 = datetime.fromtimestamp(message.date, tz=pytz.timezone("asia/jakarta")).strftime("%d/%m/%Y %H:%M:%S").split()
         bot.send_message(message.from_user.id,
-                         "🐱 - _YOUR BIO_ - 🐱\n\n*=> Nama :* " + str(user.name) + "\n*=> Age :* " + str(user.age)+" Year" + "\n*=> Gender :* " + str(user.sex) + "\n*=> Couple Type :* " + str(user.change)+ "\n*=> Register On :\n        >Ate :* "+str(date1[0])+"\n    *    >Time :* "+str(date1[1])+" WIB", parse_mode="markdown")
+                         "🐱 - _YOUR BIO_ - 🐱\n\n*=> Name :* " + str(user.name) + "\n*=> Age :* " + str(user.age)+" Year" + "\n*=> Gender :* " + str(user.sex) + "\n*=> Couple Type :* " + str(user.change)+ "\n*=> Register On :\n        >Ate :* "+str(date1[0])+"\n    *    >Time :* "+str(date1[1])+" WIB", parse_mode="markdown")
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         markup.add('Yes ✔️', 'Not ✖️')
         bot.send_message(message.from_user.id, "`Want to change the data above??`",parse_mode="markdown", reply_markup=markup)
@@ -118,7 +133,7 @@ def reg_accept(message):
             if not check_user(user_id=message.from_user.id)[0]:
                 user = user_dict[message.from_user.id]
                 reg_db(user_id=user.user_id, name=user.name, old=user.age, gender=user.sex, change=user.change)
-                bot.send_message(message.from_user.id, "_Succeed...✅\nYour Account Has Been Registered!_", parse_mode="markdown")
+                bot.send_message(message.from_user.id, "Succeed...✅\nYour Account Has Been Registered!", parse_mode="markdown")
             else:
                 if message.from_user.id in user_dict.keys():
                     user = user_dict[message.from_user.id]
@@ -139,13 +154,13 @@ def search_prof(message):
                                  user_info[3]) +" Year" + "\n*Gender :* " + str(user_info[4]) + "\n*Couple Type :* " + str(user_info[5]),parse_mode="markdown")
             mark = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             mark.add('Yes ✔️', 'Not ✖️')
-            bot.send_message(message.from_user.id, '_Want to Change Your Profile Data??_',parse_mode="markdown", reply_markup=mark)
+            bot.send_message(message.from_user.id, 'Want to Change Your Profile Data??',parse_mode="markdown", reply_markup=mark)
             bot.register_next_step_handler(message, reg_accept)
         else:
             delete_user(user_id=message.from_user.id)
             tw = types.ReplyKeyboardRemove()
-            bot.send_message(message.from_user.id, '_Wait a moment..Deleting Profile❗️_', parse_mode="markdown")
-            bot.send_message(message.from_user.id, '_Succeeded..Your Profile Deleted✅_', parse_mode="markdown", reply_markup=tw)
+            bot.send_message(message.from_user.id, 'Wait a moment..Deleting Profile❗️', parse_mode="markdown")
+            bot.send_message(message.from_user.id, 'Succeeded..Your Profile Deleted✅', parse_mode="markdown", reply_markup=tw)
             welcome(message)
     else:
         bot.send_message(message.from_user.id, 'Click on the keyboard')
@@ -165,7 +180,7 @@ def search_partner(message):
         else:
             for sel in select:
                 if check_status(first_id=message.from_user.id, second_id=sel[0]) or message.from_user.id == sel[0]:
-                    print(message.from_user.id, 'Join @AsmSafone Bot Made By @AmiFutami')
+                    print(message.from_user.id, 'Join @StreamerView, Bot Made By @RituRajPS')
                     continue
 
                 else:
@@ -194,8 +209,8 @@ def chat(message):
         mark1.add('🔍 Find a Partner')
         mark1.add('📰 Info Profile', '🗑 Delete Profile')
         companion = check_companion(first_id=message.from_user.id)
-        bot.send_message(message.from_user.id, "_You left the chat_",parse_mode="markdown", reply_markup=mark1)
-        bot.send_message(companion, "_Your Spouse Left the Conversation_", parse_mode="markdown", reply_markup=mark1)
+        bot.send_message(message.from_user.id, "You left the chat",parse_mode="markdown", reply_markup=mark1)
+        bot.send_message(companion, "Your Spouse Left the Conversation", parse_mode="markdown", reply_markup=mark1)
         close_chat(first_id=message.from_user.id)
         welcome(message)
         return
@@ -206,5 +221,5 @@ def chat(message):
     bot.send_message(companion, message.text)
     bot.register_next_step_handler(message, chat)
 
-print("BOT IS READY TO JOIN @AsmSafone")
+print("BOT IS READY TO JOIN @StreamerView")
 bot.polling()
